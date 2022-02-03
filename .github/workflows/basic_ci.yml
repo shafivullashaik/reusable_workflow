@@ -1,0 +1,49 @@
+name: CI Pipeline for generating build & uploading artifacts - sample-helloworld project
+
+on:
+  push:
+    branches: [ dev ]   
+
+jobs:
+    #This workflow contains a single job called "ci" 
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout dev branch from GitHub 
+        uses: actions/checkout@v2
+      
+      - name: Step 2 -Gradle wrapper validation
+        uses: gradle/wrapper-validation-action@v1
+      
+      - name: Step 3 - Use Java version 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
+          cache: gradle
+                  
+      - name: Step4 - Build with Gradle
+        uses: gradle/gradle-build-action@v2.1.1
+        with:
+          arguments: build
+          
+      - name: Step5 - Listing the build file name
+        run: |
+          ls '${{ github.workspace }}'/build/libs
+          
+      - name: Step6 - Execute of jar file
+        run:
+          java -cp '${{ github.workspace }}'/build/libs/gradle-github-actions-example.jar com.philips.Application
+  
+      #- name: Step7 - SonarQube Scanner 
+        #uses: SonarSource/sonarcloud-github-action@v1.6
+        #with:
+          #host: ${{ secrets.SONARQUBE_HOST }}
+          #login: ${{ secrets.SONARQUBE_TOKEN }}
+      #- name: Step8 - Publish to artifactory
+        #uses: jfrog/setup-jfrog-cli@v2.1.0
+        #with:
+          #url: 'https://company.jfrog.io/'
+          #credentials type: 'apikey'
+          #apikey: ${{ secrets.RT_APIKEY }}
+          #args: u "dist/*" "/mu/repo/path/" --recursive=true --build-name=myawesomeapp
