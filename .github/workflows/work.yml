@@ -34,11 +34,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-  jobs:
-    #This workflow contains a single job called "ci" 
-  ci:
-    runs-on: ubuntu-latest
-    steps:
+
       - name: Step 1 - Checkout dev branch from GitHub 
         uses: actions/checkout@v2
       
