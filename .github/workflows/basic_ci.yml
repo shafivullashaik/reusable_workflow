@@ -33,7 +33,7 @@ jobs:
           
       - name: Step6 - Execute of jar file
         run:
-          java -cp '${{ github.workspace }}'/build/libs/gradle-github-actions-example.jar com.philips.Application
+          java -cp 
   
       #- name: Step7 - SonarQube Scanner 
         #uses: SonarSource/sonarcloud-github-action@v1.6
